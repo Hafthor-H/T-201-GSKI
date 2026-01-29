@@ -1,6 +1,6 @@
 import ctypes
 
-class FixedSizeArray:
+class DumbFixedSizeArray:
 
     """
         Fixed-size array (using the ctypes package to access the underlying C-code interface).
@@ -31,34 +31,35 @@ class FixedSizeArray:
     def __getitem__(self, index: int):
         """
         Accessing an element at given index (x = A[index]).
-        Time complexity: O(1)
+        Time complexity: O(n)
         :param index
         :return Element at index (exception if index is out of range)
         """
-        if index < 0 or index >= self.__capacity:
+
+        if index < 0:
+            if index < -(self.__capacity):
+                raise IndexError("Index out of range")
+            return self.__array[self.length() + index]
+        if index >= self.__capacity:
             raise IndexError("Index out of range")
-        if self.__array[index] is None:
-            raise IndexError("Index out of range")
+        elif self.__array[index] is None:
+            raise IndexError("Nothing there cuh")
         return self.__array[index]
 
-    def double_that_shit_and_add_value(self):
-        if self.__array._length_ != self.__capacity:
-            raise IndexError("Bro the array is not full my G")
-        else:
-            self.__capacity *= 2
-            new_array = (ctypes.py_object * self.__capacity)()
-            for i in range(self.__capacity):
-                new_array[i] = None
-            for j, k in enumerate(self.__array):
-                new_array[j] = k
-            self.__array = new_array
+    def double_the_array(self):
+        self.__capacity *= 2
+        new_array = (ctypes.py_object * self.__capacity)()
+        for i in range(self.__capacity):
+            new_array[i] = None
+        for j, k in enumerate(self.__array):
+            new_array[j] = k
+        self.__array = new_array
 
     def append_that_shit(self, value):
         if self.length() == self.__capacity:
-            print("huh")
-            self.double_that_shit_and_add_value()
+            self.double_the_array()
         self.__array[self.length()] = value
-    
+
     def clear_da_shit(self):
         self.__array = (ctypes.py_object * self.initial_capacity)()
         for i in range(self.initial_capacity):
@@ -68,17 +69,25 @@ class FixedSizeArray:
     def __setitem__(self,index: int ,value: object):
         """
         Updating an element at given index (A[index] = x).
-        Time complexity: O(1)
+        Time complexity: O(1)   O(n)?
         :param index
         :return Element at index (exception if index is out of range)
         """
-        if index < 0 or index > self.length():
-            raise IndexError("Index out of range")
-        try:
-            self.__array[index] = value
-        except IndexError:
-            self.double_that_shit_and_add_value()
-            self.__array[index] = value
+        if index < 0:
+            if index < -(self.__capacity):
+                raise IndexError("Index out of range")
+            
+            self.__array[self.length() + index] = value
+        elif index > self.length():
+            raise IndexError("Cannot set a value to len +1")
+
+        
+        else:
+            try:
+                self.__array[index] = value
+            except IndexError:
+                self.double_the_array()
+                self.__array[index] = value
     
     def __iter__(self):
         """
@@ -122,3 +131,5 @@ class FixedSizeArray:
             if i is value:
                 counter += 1
         return counter
+    
+

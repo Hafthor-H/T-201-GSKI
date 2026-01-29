@@ -23,19 +23,16 @@ class DAList:
     def __len__(self) -> int:
         """
         Returns the number of elements in the array ( ... = len(A))
-        Time Complexity: ?
+        Time Complexity: O(n)
         :return: number of elements
         """
         # count the number of elements in the array and return the result
-        length = 0
-        for _ in self.data:
-            length += 1
-        return length
+        return self.data.length()
 
     def __getitem__(self, index: int):
         """
         Accessing an element at given index (... = A[index]).
-        Time complexity: ?
+        Time complexity: o(1)
         :param index
         :return Element at index (exception if index is out of range)
         """
@@ -45,16 +42,16 @@ class DAList:
     def __setitem__(self, index: int, value: object):
         """
         Updating an element at given index (A[index] = value).
-        Time complexity: ?
+        Time complexity: o(n)
         :param index:
         """
         # set the element at the correct index to the value
-        self.data[index] = value
+        self.data.__setitem__(index,value)
 
     def __str__(self):
         """
         Returns a string representation of the array, e.g, [1, 2, 3] (str(A))
-        Time complexity: ?
+        Time complexity: o(1)
         :return: string representation
         """
         # create a comma separated string of all the elements
