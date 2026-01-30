@@ -123,6 +123,7 @@ else:
 
 if len(D) == 5:
     print('len works: ', D)
-
 else:
     raise ValueError('Error in len')
+D[-4] = "bruh"
+print(D)

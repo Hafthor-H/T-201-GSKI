@@ -46,10 +46,13 @@ class DAList:
         :return Element at index (exception if index is out of range)
         """
 
+        if index < 0:
+            index = len(self) + index
+
         if index >= len(self):
             raise IndexError("Index out of range")
         elif index < 0:
-            return self.data[len(self) + index]
+            raise IndexError("Index out of range")
         elif self.data[index] is None:
             raise IndexError("Nothing there cuh")
         return self.data[index]
@@ -61,13 +64,21 @@ class DAList:
         :param index:
         """
 
-        if index < 0:
-            if index < -(len(self)):
-                raise IndexError("Index out of range")
-            self.data[len(self) + index] = value
-        elif index > len(self):
-            raise IndexError("Cannot set a value to len +1")
+        # if index < 0:
+        #     if index < -(len(self)):
+        #         raise IndexError("Index out of range")
+        #     self.data[len(self) + index] = value
+        
+        
 
+        if index < 0:
+            index = len(self) + index
+
+        if index >= len(self):
+            raise IndexError("Index out of range")
+        
+        elif index < 0:
+            raise IndexError("Index out of range")
         
         else:
             try:
@@ -108,6 +119,13 @@ class DAList:
         Time complexity: O(n^2)
         :param index
         """
+        if index < 0:
+            index = len(self) + index
+        elif index >= len(self):
+            raise IndexError("Index out of range")
+        elif index < 0:
+            raise IndexError("Index out of range")
+
         for i in range(index, len(self) - 1):
             self.data[i] = self.data[i + 1]
         self.data[len(self) - 1] = None
@@ -154,7 +172,7 @@ class DAList:
             if i is value:
                 counter += 1
         return counter
-    
+
 
     def index(self, value: object):
         """
@@ -163,6 +181,7 @@ class DAList:
         :param value: The value to look for
         :return:  index of first occurrence in list
         """
+
         for i in range(len(self)):
             if self.data[i] == value:
                 return i
@@ -176,8 +195,13 @@ class DAList:
         :param index: position where to append the element.
         :param value: element to append
         """
-        if index > len(self):
+        if index < 0:
+            index = len(self) + index
+        elif index > len(self):
             raise IndexError("Index out of range")
+        elif index < 0:
+            raise IndexError("Index out of range")
+
         elif len(self) == self.capacity:
             self.double_the_array()
 
@@ -192,14 +216,11 @@ class DAList:
         """
         temp_array = DAList(self.capacity)
 
-        counter = 0
-        
         for i in range(1,self.capacity+1):
             if self.data[-i] is None:
                 continue
 
-            temp_array[counter] = self.data[-i]
-            counter += 1
+            temp_array.append(self.data[-i])
         
         self.data = temp_array.data
         return self
@@ -228,7 +249,7 @@ class DAList:
 
         for i in range(len(self)):
             
-            copied_list[i] = self.data[i]
+            copied_list.append(self.data[i])
             
         return copied_list
             
@@ -249,9 +270,15 @@ class DAList:
         Time complexity: O(n)
         :param index: position of element to remove
         """
-
+        if index < 0:
+            index = len(self) + index
+        elif index >= len(self):
+            raise IndexError("Index out of range")
+        elif index < 0:
+            raise IndexError("Index out of range")
+        
         value = self.data[index]
-        self.remove(value)
+        self.__delitem__(index)
         return value
 
 
