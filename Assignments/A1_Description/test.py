@@ -5,6 +5,7 @@ D = DAList(4)
 D.append(1)
 D.append(2)
 D.append(5)
+D.insert(10)
 if str(D) == '[1, 2, 5]':
     print('Append works: ', D)
 
